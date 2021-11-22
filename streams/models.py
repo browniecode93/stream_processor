@@ -14,3 +14,14 @@ class Card(faust.Record):
     response_code: str = None
     credit_name: str = None
     debit_name: str = None
+
+
+class Core(faust.Record):
+    id: str = None
+    transaction_type: str = None
+    account_id: str = None
+    occurrence_id: str = None
+    status: str = None
+    transaction_code: str = None
+    current_balance: str = None
+    transaction_date: str = None
