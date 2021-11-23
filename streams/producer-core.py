@@ -7,7 +7,7 @@ import asyncio
 import random
 from faust.cli import option
 
-app = faust.App('faust_core_producer', broker=settings.KAFKA_BOOTSTRAP_SERVER, web_port=7001)
+app = faust.App('faust_core_producer', broker='kafka://localhost:9092', web_port=7001)
 topic = app.topic('core_transaction')
 
 @app.command(
@@ -16,9 +16,8 @@ topic = app.topic('core_transaction')
            help='Add delay of (at most) n seconds between publishing.')
 )
 async def produce(self, max_latency: float):
-    print("hereee")
     """Produce example Withdrawal events."""
-    with open('events/test_c.json', 'r') as card_events:
+    with open('events/core_events.json', 'r') as card_events:
         data = json.load(card_events)
     for dt in data:
         print(dt)
