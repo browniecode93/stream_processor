@@ -6,7 +6,6 @@ import faust
 
 from streams.models import Card, Core
 import streams.settings as settings
-import datetime
 
 
 logger = logging.getLogger(__name__)
@@ -25,10 +24,10 @@ app = faust.App(
     logging_config=settings.LOGGING
 )
 
-transaction = app.topic(settings.TOPIC_TRANSACTIONS, acks=settings.OFFSET_ACK_ON_KAFKA, partitions=8)
+transaction = app.topic(settings.TOPIC_TRANSACTIONS, acks=settings.OFFSET_ACK_ON_KAFKA, partitions=None, internal=True)
 card_table = app.Table('card_table', default=Card)
 
-core = app.topic('core_transaction', acks=settings.OFFSET_ACK_ON_KAFKA, partitions=8)
+core = app.topic('core_transaction', acks=settings.OFFSET_ACK_ON_KAFKA, partitions=None, internal=True)
 core_table = app.Table('core_table', default=Core)
 
 from_zone = tz.tzutc()
@@ -91,12 +90,12 @@ async def core(stream):
         if event['op_type'] == 'U':
             core_after = event['after']
             id_u = core_after['id']
-            list_of_values = core_table[id_u].value()
-            list_of_values['transaction_code'] = core_after['transaction_code'],
-            list_of_values['current_balance'] = core_after['current_balance'],
-            list_of_values['status'] = core_after['status']
-            core_table[id_u] = list_of_values
+            core_u = core_table[id_u]
+            if core_u is not None:
+                core_u.transaction_code = core_after['transaction_code'],
+                core_u.current_balance = core_after['current_balance'],
+                core_u.status = core_after['status']
+                core_table[id_u] = core_u
             print(f"{repr([k for (k, v) in core_table.items()])}")
-
 
 
