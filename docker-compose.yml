@@ -15,7 +15,6 @@ services:
     env_file:
       - ./.envs/.streams
     command: sh stream_processor_run.sh
-
     restart: unless-stopped
   postgres:
     image: postgres:latest # use latest official postgres version
@@ -38,6 +37,8 @@ services:
     container_name: kafka
     depends_on:
       - zookeeper
+    logging:
+      driver: "none"
     ports:
       # "`-._,-'"`-._,-'"`-._,-'"`-._,-'"`-._,-'"`-._,-'"`-._,-'"`-._,-'"`-._,-
       # An important note about accessing Kafka from clients on other machines:
