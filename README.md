@@ -45,4 +45,4 @@ All tables are availabale on `dwh` schema.
 
 Sample:
 
-![transaction_amount_per_id](https://pasteboard.co/0QqqCWxzKMkf.png)
+![transaction_amount_per_id](https://github.com/browniecode93/stream_processor/blob/master/img/Screen%20Shot%202021-11-26%20at%203.47.20%20PM.png)
