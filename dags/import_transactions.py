@@ -70,7 +70,6 @@ def import_card_transactions(url, **kwargs):
     response = requests.get(url)
     values = response.json()
     for d in values['all']:
-        print(f">>>>>>>>{d}")
         del d['__faust']
         d['transaction_time'] = datetime.fromtimestamp(d['transaction_time']).isoformat()
     df = pd.DataFrame(values['all'])

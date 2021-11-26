@@ -1,8 +1,8 @@
-CREATE SCHEMA dwh
+CREATE SCHEMA dwh;
 
 CREATE TABLE IF NOT EXISTS dwh.card(
     id uuid NOT NULL,
-    transaction_time timestamp with timezone,
+    transaction_time timestamp with time zone,
     request_code int,
     card_no varchar(80),
     account_number varchar(80),
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS dwh.card(
     credit_name varchar(50),
     debit_name varchar(50),
     account_id int
-)
+);
 
 CREATE TABLE IF NOT EXISTS dwh.core(
     id uuid NOT NULL,
@@ -25,5 +25,14 @@ CREATE TABLE IF NOT EXISTS dwh.core(
     status varchar(5),
     transaction_code varchar(50),
     current_balance bigint,
-    transaction_date timestamp with timezone
-)
+    transaction_date timestamp with time zone
+);
+
+CREATE TABLE IF NOT EXISTS dwh.amount_report(
+    transaction_type int,
+    account_id int,
+    transaction_count int,
+    transaction_amount bigint,
+    transaction_date date
+);
+ALTER TABLE dwh.amount_report ADD CONSTRAINT amount_pkey PRIMARY KEY (transaction_type, transaction_date, account_id);
