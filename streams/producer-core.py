@@ -8,7 +8,7 @@ import random
 from faust.cli import option
 
 app = faust.App('faust_core_producer', broker='kafka://localhost:9092', web_port=7001)
-topic = app.topic('core_transaction')
+topic = app.topic(settings.CORE_TOPIC_TRANSACTIONS)
 
 @app.command(
     option('--max-latency',
