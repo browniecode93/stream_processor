@@ -69,7 +69,7 @@ with DAG(**dag_params) as dag:
         op_kwargs={
             'conn_id': 'airflow_db',
             'query': "select account_number, dca.transaction_time::date from dwh.card dca join dwh.core dco on dca.account_id = dco.account_id where dco.status = '200' and dca.transaction_time::date > %(date)s::DATE - INTERVAL '3 DAY'",
-            'args': {'date': '2021-11-17'},
+            'args': {'date': '{{next_ds}}'},
         },
         dag=dag,
     )
