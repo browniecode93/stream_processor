@@ -37,8 +37,13 @@ CREATE TABLE IF NOT EXISTS dwh.amount_report(
 );
 ALTER TABLE dwh.amount_report ADD CONSTRAINT amount_pkey PRIMARY KEY (transaction_type, transaction_date, account_id);
 
-
 CREATE TABLE IF NOT EXISTS dwh.successful_transactions(
     account_number varchar(80),
     transaction_date date
+);
+
+CREATE TABLE IF NOT EXISTS dwh.end_of_day_balance(
+    transaction_date date,
+    account_id int,
+    current_balance bigint
 );
