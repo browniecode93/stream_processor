@@ -42,22 +42,22 @@ def execute_query(conn_id, query, args, **kwargs):
 
 def insert_into_eod_table(**kwargs):
     result = kwargs['task_instance'].xcom_pull(task_ids='execute_eod_query', key='query_result')
-    print(f">>>>>>{result}")
-    df = pd.DataFrame(result)
-    df.transpose()
-    df.columns = ['transaction_date', 'account_id', 'current_balance']
-    pg_hook = PostgresHook(postgres_conn_id='airflow_db')
-    engine = sa.create_engine(pg_hook.get_uri(), echo=False)
-    df.to_sql(
-        name='end_of_day_balance',
-        con=engine,
-        schema='dwh',
-        if_exists='append',
-        index=False,
-        chunksize=10000,
-        method='multi',
-    )
-    engine.dispose()
+    if result:
+        df = pd.DataFrame(result)
+        df.transpose()
+        df.columns = ['transaction_date', 'account_id', 'current_balance']
+        pg_hook = PostgresHook(postgres_conn_id='airflow_db')
+        engine = sa.create_engine(pg_hook.get_uri(), echo=False)
+        df.to_sql(
+            name='end_of_day_balance',
+            con=engine,
+            schema='dwh',
+            if_exists='append',
+            index=False,
+            chunksize=10000,
+            method='multi',
+        )
+        engine.dispose()
 
 
 query = '''

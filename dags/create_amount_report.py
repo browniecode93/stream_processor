@@ -42,20 +42,21 @@ def execute_query(conn_id, query, args, **kwargs):
 
 def insert_into_account_amount_table(**kwargs):
     result = kwargs['task_instance'].xcom_pull(task_ids='get_transaction_count_and_amount', key='query_result')
-    df = pd.DataFrame(result)
-    df.transpose()
-    df.columns = ['account_id', 'transaction_type', 'transaction_count', 'transaction_amount', 'transaction_date']
-    pg_hook = PostgresHook(postgres_conn_id='airflow_db')
-    engine = sa.create_engine(pg_hook.get_uri(), echo=False)
-    df.to_sql(
-        name='amount_report',
-        con=engine,
-        schema='dwh',
-        if_exists='append',
-        index=False,
-        chunksize=10000,
-        method='multi',
-    )
+    if result:
+        df = pd.DataFrame(result)
+        df.transpose()
+        df.columns = ['account_id', 'transaction_type', 'transaction_count', 'transaction_amount', 'transaction_date']
+        pg_hook = PostgresHook(postgres_conn_id='airflow_db')
+        engine = sa.create_engine(pg_hook.get_uri(), echo=False)
+        df.to_sql(
+            name='amount_report',
+            con=engine,
+            schema='dwh',
+            if_exists='append',
+            index=False,
+            chunksize=10000,
+            method='multi',
+        )
     engine.dispose()
 
 

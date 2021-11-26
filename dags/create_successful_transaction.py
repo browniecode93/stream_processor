@@ -42,21 +42,22 @@ def execute_query(conn_id, query, args, **kwargs):
 
 def insert_into_successful_transaction_table(**kwargs):
     result = kwargs['task_instance'].xcom_pull(task_ids='execute_successful_transaction_query', key='query_result')
-    df = pd.DataFrame(result)
-    df.transpose()
-    df.columns = ['account_number', 'transaction_date']
-    pg_hook = PostgresHook(postgres_conn_id='airflow_db')
-    engine = sa.create_engine(pg_hook.get_uri(), echo=False)
-    df.to_sql(
-        name='successful_transactions',
-        con=engine,
-        schema='dwh',
-        if_exists='append',
-        index=False,
-        chunksize=10000,
-        method='multi',
-    )
-    engine.dispose()
+    if result:
+        df = pd.DataFrame(result)
+        df.transpose()
+        df.columns = ['account_number', 'transaction_date']
+        pg_hook = PostgresHook(postgres_conn_id='airflow_db')
+        engine = sa.create_engine(pg_hook.get_uri(), echo=False)
+        df.to_sql(
+            name='successful_transactions',
+            con=engine,
+            schema='dwh',
+            if_exists='append',
+            index=False,
+            chunksize=10000,
+            method='multi',
+        )
+        engine.dispose()
 
 
 with DAG(**dag_params) as dag:
