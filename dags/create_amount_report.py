@@ -16,7 +16,7 @@ default_args = {
 }
 """Default arguments used on DAG parameters."""
 dag_params = {
-    'dag_id': 'create_amount_report_2',
+    'dag_id': 'create_amount_report',
     'default_args': default_args,
     'schedule_interval': '@daily',
     'catchup': True,
