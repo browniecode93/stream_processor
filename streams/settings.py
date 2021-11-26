@@ -33,4 +33,5 @@ OFFSET_ACK_ON_KAFKA = strtobool(os.getenv("OFFSET_ACK_ON_KAFKA", "False"))
 
 KAFKA_BOOTSTRAP_SERVER = os.getenv("KAFKA_BOOTSTRAP_SERVER", "kafka://kafka:29092")
 
-TOPIC_TRANSACTIONS = os.getenv("KAFKA_TOPIC_TRANSACTIONS", "card_transaction")
+CARD_TOPIC_TRANSACTIONS = os.getenv("KAFKA_TOPIC_TRANSACTIONS", "card_transaction")
+CORE_TOPIC_TRANSACTIONS = os.getenv("KAFKA_TOPIC_TRANSACTIONS", "core_transaction")
