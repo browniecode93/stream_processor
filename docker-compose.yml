@@ -78,8 +78,6 @@ services:
     environment:
       - LOAD_EX=n
       - EXECUTOR=Local
-    logging:
-      driver: "none"
     volumes:
       - ./dags:/usr/local/airflow/dags
         # - ./plugins:/usr/local/airflow/plugins
@@ -93,7 +91,7 @@ services:
       timeout: 30s
       retries: 3
   db:
-    image: postgres:10.5
+    image: postgres
     restart: always
     environment:
       - POSTGRES_USER=admin
@@ -105,4 +103,4 @@ services:
         max-file: "3"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
-      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./sql/:/docker-entrypoint-initdb.d
