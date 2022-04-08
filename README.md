@@ -43,13 +43,7 @@ You can check created tables by connecting to db container with `docker-compose 
 
 All tables are availabale on `dwh` schema.
 
-## Reviewer note:
-
-It was my first time using Faust hence I wasnt really familiar with its best practices. I was not able to develop aggregate section on the question because of my full time job but my proposed solution is to populate messages to a sink with partitioned table of type list and expiration time of 600 seconds, and merge two sequences of cards and cores events if exists.
-
-Thanks for your time!
-
-Sample:
+## Sample:
 
 transaction amount per account id:
 
